@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet
+import sys
 
 def keygen():
     key = Fernet.generate_key()
@@ -6,6 +7,7 @@ def keygen():
         k.write(key)
 
 def encrypt(message):
+    keygen()
     with open("key.txt","rb") as k:
         key = k.read()
     en_msg = message.encode()
@@ -13,8 +15,9 @@ def encrypt(message):
     result = f.encrypt(en_msg)
     with open("msg.txt", "wb") as m:
         m.write(result)
-    print("Encrypted Text File Generated in Current Folder!")
-    print("Key Text File Generated in Current Folder!")
+    print("Encrypted Text: " +str(result))
+    print("Key: " +str(key))
+    print("Encrypted Text and Key Files Generated!")
 
 def decrypt(msgfile, keyfile):
     with open(keyfile, "rb") as k:
@@ -24,12 +27,14 @@ def decrypt(msgfile, keyfile):
     f = Fernet(key)
     result = f.decrypt(en_msg)
     print(result.decode())
-ch = input("Do you want to Encrypt or Decrypt ? (E/D)")
-if ch=="E".casefold():
-    encrypt(input("Please Enter Your Text\n> "))
-elif ch=="D".casefold():
-    m = input("Enter Encrypted File Path \n> ")
-    n = input("Enter Key File Path \n> ")
-    decrypt(m,n)
-else:
-    print("Invalid Choice")
+while True:
+    ch = input("\nDo you want to Encrypt or Decrypt ?(E/D)\n> ")
+    if ch=="E" or ch =="e":
+        encrypt(input("Please Enter Your Text\n> "))
+    elif ch=="D" or ch =="d":
+        m = input("Enter Encrypted File Path \n> ")
+        n = input("Enter Key File Path \n> ")
+        decrypt(m,n)
+    else:
+        print("Thank You!")
+        sys.exit()
