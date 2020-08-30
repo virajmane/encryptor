@@ -1,3 +1,8 @@
+"""
+This Script Generates two files one is the message and other one is the key
+to get a single message embeded with the key check the other script
+"""
+
 from cryptography.fernet import Fernet
 import sys
 
